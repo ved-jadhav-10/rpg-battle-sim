@@ -6,7 +6,7 @@ public class BattleSimulator
     private Character player; // user
     private Character enemy; // system
     private Scanner sc = new Scanner(System.in);
-    private StringBuilder battleLog = new StringBuilder();
+    private StringBuilder battleLog = new StringBuilder(); // to record the battle log
 
     public BattleSimulator(Character player) 
     {
@@ -15,15 +15,16 @@ public class BattleSimulator
 
     public void startBattle(int enemyLevel) 
     {
-        enemy = Enemy.createEnemy(enemyLevel); // create random enemy of given level
+        enemy = Enemy.createEnemy(enemyLevel); // create random enemy of given level (based on your player level)
         System.out.println("\n=== Battle Start ===");
         System.out.println(player.getName() + " VS " + enemy.getName());
 
-        // Optional: multithreading enemy turn
+        /* Optional: multithreading enemy turn, since we already have an enemy attack file we don't need this here
         EnemyThread enemyThread = new EnemyThread(enemy, player, battleLog);
         enemyThread.start();
-
-        while (player.isAlive() && enemy.isAlive()) 
+        */
+        
+        while (player.isAlive() && enemy.isAlive()) // to keep the battle running as long as both characters are alive
         {
             playerTurn();
         }
@@ -46,7 +47,7 @@ public class BattleSimulator
         showBattleLog();
     }
 
-    private void playerTurn() 
+    private void playerTurn() // player choices
     {
         boolean validChoice = false;
         while (!validChoice) 
@@ -95,7 +96,7 @@ public class BattleSimulator
         battleLog.append(action).append("\n");
     }
 
-    // Inner class for enemy multithreading
+    /* Inner class for enemy multithreading - this would be required if we chose not to have the EnemyAttack.java file, in that case we only need 3 files to run the program
     private class EnemyThread extends Thread 
     {
         private Character enemy;
@@ -118,7 +119,7 @@ public class BattleSimulator
             {
                 try 
                 {
-                    Thread.sleep(6000); // enemy attacks every 6 seconds
+                    Thread.sleep(5000); // enemy attacks every 5 seconds
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -142,7 +143,7 @@ public class BattleSimulator
         public void stopThread() {
             running = false;
         }
-
+        */
         private void log(String action) {
             synchronized (battleLog) { // prevent concurrent access issues
                 battleLog.append(action).append("\n");
